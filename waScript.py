@@ -6,7 +6,7 @@ import urllib.parse
 import time
 
 # Phone number in international format (e.g., India)
-phone_number = "917992414822"
+phone_number = "91222222222"
 message = "Hello from Selenium using wa.me!"
 encoded_msg = urllib.parse.quote(message)
 
