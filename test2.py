@@ -18,7 +18,7 @@ message = "Hello! This is a test message from Selenium."
 encoded_msg = urllib.parse.quote(message)
 
 for number in numbers:
-    wa_url = f"https://wa.me/{number}?text={encoded_msg}"
+    wa_url = f"https://web.whatsapp.com/send?phone={number}&text={encoded_msg}"
     driver.get(wa_url)
 
     try:
