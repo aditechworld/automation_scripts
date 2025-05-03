@@ -38,26 +38,15 @@ for number in numbers:
         print(f"No WhatsApp Web button for {number}.")
 
     try:
-        # Wait for chat box and send message
-        # msg_box = WebDriverWait(driver, 15).until(
-        #     EC.presence_of_element_located((By.XPATH, '//div[@title="Type a message"]'))
-        # )
-        # print("find message box")
-        # msg_box.send_keys(message)
-        # print("message typing...")
-        # msg_box.send_keys(Keys.ENTER)
-        # send_btn = WebDriverWait(driver,11).until(EC.element_located_to_be_selected((By.XPATH,'//span[@data-icon="send"]')))
         send_btn = WebDriverWait(driver, 10).until(
     EC.element_to_be_clickable((By.XPATH, '//button[@aria-label="Send"]'))
 )
         send_btn.click()
-        # send_btn = driver.find_element(By.XPATH, '//button[@aria-label="Send"]')
-        # send_btn.click()
         print(f"Message sent to {number}")
     except Exception as e:
         print(f"Failed to send message to {number}")
         print(f"expection: {e}")
 
-    time.sleep(2)  # wait between contacts
+    time.sleep(1)  # wait between contacts
 
 driver.quit()
