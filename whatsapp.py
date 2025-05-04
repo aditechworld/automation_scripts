@@ -51,6 +51,8 @@ driver = webdriver.Chrome(options=chrome_options)
 
 
 for number,message in get_contact_message_pairs(df):
+    if len(str(message).trim()) == 0:
+        continue
     encoded_msg = urllib.parse.quote(message)
     wa_url = f"https://web.whatsapp.com/send?phone={number}&text={encoded_msg}"
     driver.get(wa_url)
