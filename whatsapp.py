@@ -26,22 +26,25 @@ def get_contact_message_pairs(df, contact_col='phone', message_col='message', se
 
     send_all = str(df[send_all_col].iloc[0]).strip().lower() == 'yes' if send_all_col in df.columns else False
     pairs = []
+    seen_numbers = set()
 
     if send_all:
-        # Get first non-empty message
         first_message = df[message_col].dropna().loc[lambda x: x.str.strip() != ''].iloc[0]
         for contact in df[contact_col]:
             cleaned = clean_contact(contact)
-            if cleaned is not None:
+            if cleaned is not None and cleaned not in seen_numbers:
+                seen_numbers.add(cleaned)
                 pairs.append((cleaned, first_message))
     else:
         for _, row in df.iterrows():
             contact = clean_contact(row[contact_col])
             message = str(row[message_col]).strip()
-            if contact is not None:
+            if contact is not None and contact not in seen_numbers:
+                seen_numbers.add(contact)
                 pairs.append((contact, message))
 
     return pairs
+
 
 
 # --- Setup Chrome with profile ---
@@ -66,6 +69,6 @@ for number,message in get_contact_message_pairs(df):
     except Exception as e:
         print(f"Failed to send message to {number}")
 
-    time.sleep(1)  # wait between contacts
+    time.sleep(3)  # wait between contacts
 
 driver.quit()
