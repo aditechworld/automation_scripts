@@ -57,7 +57,7 @@ def save_failed_messages(failed_pairs, filename='failed_messages.xlsx'):
         print("No failed messages to save.")
         return
 
-    df = pd.DataFrame(failed_pairs, columns=['Phone Number', 'Message'])
+    df = pd.DataFrame(failed_pairs, columns=['phone', 'message'])
     df.to_excel(filename, index=False)
     print(f"Saved {len(failed_pairs)} failed messages to {filename}")
 
