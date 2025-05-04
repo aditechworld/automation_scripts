@@ -78,16 +78,20 @@ for number,message in get_contact_message_pairs(df):
     wa_url = f"https://web.whatsapp.com/send?phone={number}&text={encoded_msg}"
     driver.get(wa_url)
 
-
     try:
+        # wait untill Chats h1 not appear.
+        WebDriverWait(driver, 300).until(
+        EC.presence_of_element_located((By.XPATH, '//h1[text()="Chats"]'))
+    )
         send_btn = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, '//button[@aria-label="Send"]')))
         send_btn.click()
         print(f"Message sent to {number}")
     except Exception as e:
-        save_failed_messages(failed_message.append((number,message)))
+        failed_message.append((number,message))
         print(f"Failed to send message to {number}")
 
     time.sleep(2)  # wait between contacts
 
+save_failed_messages(failed_message)
 driver.quit()
