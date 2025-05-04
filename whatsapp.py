@@ -45,12 +45,30 @@ def get_contact_message_pairs(df, contact_col='phone', message_col='message', se
 
     return pairs
 
+def save_failed_messages(failed_pairs, filename='failed_messages.xlsx'):
+    """
+    Save a list of (phone_number, message) tuples to an Excel file.
+    
+    Parameters:
+    - failed_pairs: List of tuples, each containing (phone_number, message)
+    - filename: Name of the Excel file to save
+    """
+    if not failed_pairs:
+        print("No failed messages to save.")
+        return
+
+    df = pd.DataFrame(failed_pairs, columns=['Phone Number', 'Message'])
+    df.to_excel(filename, index=False)
+    print(f"Saved {len(failed_pairs)} failed messages to {filename}")
+
 
 
 # --- Setup Chrome with profile ---
 chrome_options = Options()
 chrome_options.add_argument("user-data-dir=C:/session")  # change path
 driver = webdriver.Chrome(options=chrome_options)
+
+failed_message = []
 
 
 for number,message in get_contact_message_pairs(df):
@@ -67,8 +85,9 @@ for number,message in get_contact_message_pairs(df):
         send_btn.click()
         print(f"Message sent to {number}")
     except Exception as e:
+        save_failed_messages(failed_message.append((number,message)))
         print(f"Failed to send message to {number}")
 
-    time.sleep(3)  # wait between contacts
+    time.sleep(2)  # wait between contacts
 
 driver.quit()
